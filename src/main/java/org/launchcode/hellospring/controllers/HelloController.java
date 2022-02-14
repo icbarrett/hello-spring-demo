@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 @ResponseBody
 @RequestMapping("hello")
 public class HelloController {
+    private String name;
+    private String language;
 
     // lives at path "/hello"
     // Handles requests at /hello
@@ -33,8 +35,8 @@ public class HelloController {
     // now lives at /hello/h
     @RequestMapping(method = {RequestMethod.GET, RequestMethod.POST}, value = "hello")
     public String helloWithQueryParam(@RequestParam String name, @RequestParam String language) {
-        String properGreeting = HelloController.createMessage(name, lauguage);
-        return "Hello, " + name + " in " + language + "!";
+        String properGreeting = HelloController.createMessage(name, language);
+        return properGreeting;
     }
 
     // Handles requests of the form /hello/LaunchCode
@@ -57,8 +59,8 @@ public class HelloController {
                             "<option value = 'English'>English</option>" +
                             "<option value = 'Spanish'>Spanish</option>" +
                             "<option value = 'Swedish'>Swedish</option>" +
-                            "<option value  'Pig Latin'>Pig Latin</option>" +
-                            "<option value = 'Hebrew'>Herbrew</option>" +
+                            "<option value = 'Pig Latin'>Pig Latin</option>" +
+                            "<option value = 'Hebrew'>Hebrew</option>" +
                         "</select>" +
                         "<input type = 'submit' value = 'Greet Me!' />" +
                     "</form>" +
@@ -67,19 +69,32 @@ public class HelloController {
         return html;
     }
 
-    public static String createMessage(String name, String language) {
-        switch (language) {
-            case "English":
-                return "Hello, " + name;
-            case "Swedish":
-                return "Hey, " + name;
-            case "Pig Latin":
-                return "Oink, " + name;
-            case "Hebrew":
-                return "Shalom " + name;
-            default:
-                return "BLAH! " + name;
+    public static String createMessage(@RequestParam String name, @RequestParam String language) {
+//        switch (language) {
+//            case "Swedish":
+//                return "Hey, " + name;
+//            case "Pig Latin":
+//                return "Oink Oink, " + name;
+//            case "Hebrew":
+//                return "Shalom " + name;
+//            case "English":
+//            default:
+//                return "Hello! " + name;
+//        }
+        String greeting = "";
+        if (language.equals("English")) {
+            greeting = "Hello, ";
+        } else if (language.equals("Spanish")) {
+            greeting = "Hola, ";
+        } else if (language.equals("Swedish")) {
+            greeting = "Hejsan, ";
+        } else if (language.equals("Pig Latin")) {
+            greeting = "Oink Oink, ";
+        } else if (language.equals("Hebrew")) {
+            greeting = "Shalom, ";
         }
+        return greeting + " " + name + "!";
+
     }
 
 
